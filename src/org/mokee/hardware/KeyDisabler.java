@@ -47,7 +47,7 @@ public class KeyDisabler {
      */
 
     public static boolean setActive(boolean state) {
-        throw new UnsupportedOperationException();
+        return false;
     }
 
 }
