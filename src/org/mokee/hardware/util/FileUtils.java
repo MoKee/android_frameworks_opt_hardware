@@ -19,6 +19,7 @@ package org.mokee.hardware.util;
 import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -72,5 +73,24 @@ public final class FileUtils {
         }
 
         return true;
+    }
+
+    /**
+     * Writes the given value into the given file using echo
+     *
+     * @return true on success, false on failure
+     */
+    public static boolean altWrite(boolean state, String path) {
+        String value = state ? "1" : "0";
+        try {
+            Process p = Runtime.getRuntime().exec("sh");
+            DataOutputStream os = new DataOutputStream(p.getOutputStream());
+            os.writeBytes("echo " + value + " > " + path + "\n");
+            os.writeBytes("exit\n");
+            os.flush();
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 }

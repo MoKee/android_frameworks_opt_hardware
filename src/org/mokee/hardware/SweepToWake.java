@@ -33,17 +33,17 @@ public class SweepToWake {
     /**
      * This method return the current activation state
      *
-     * @return boolean Must be false when feature is not supported or 
+     * @return int Must be 0 when feature is not supported or
      * disabled.
      */
-    public static boolean isEnabled() { return false; }
+    public static int isEnabled() { return 0; }
 
     /**
      * This method allows to set activation state
      *
-     * @param state The new state
+     * @param type The new type
      * @return boolean for on/off, exception if unsupported
      */
-    public static boolean setEnabled(boolean state) { throw new UnsupportedOperationException(); }
+    public static boolean setEnabled(int type) { throw new UnsupportedOperationException(); }
 
 }
