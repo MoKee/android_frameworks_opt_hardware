@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2015 The CyanogenMod Project
+ * Copyright (C) 2015 The MoKee OpenSource Project
  * Copyright (C) 2015 Franco Rapetti <frapeti@gmail.com>
  * Copyright (C) 2013 Xiao-Long Chen <chenxiaolong@cxl.epac.to>
  *
@@ -16,7 +17,7 @@
  * limitations under the License.
  */
 
-package org.cyanogenmod.hardware;
+package org.mokee.hardware;
 
 /**
  * Touchscreen Hovering
