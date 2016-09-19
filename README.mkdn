@@ -1,4 +1,4 @@
-CyanogenMod Hardware Abstraction Framework
+MoKee Open Source Hardware Abstraction Framework
 ==========================================
 
 What's this?

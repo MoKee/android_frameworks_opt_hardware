@@ -1,4 +1,5 @@
 # Copyright (C) 2013 The CyanogenMod Project
+# Copyright (C) 2013 The MoKee Open Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -42,8 +43,8 @@ default_classes :=
 LOCAL_SRC_FILES += $(default_classes) $(unique_specific_classes)
 
 LOCAL_MODULE_TAGS := optional
-LOCAL_MODULE := org.cyanogenmod.hardware
-LOCAL_JAVA_LIBRARIES := org.cyanogenmod.platform.internal
+LOCAL_MODULE := org.mokee.hardware
+LOCAL_JAVA_LIBRARIES := org.mokee.platform.internal
 
 include $(BUILD_JAVA_LIBRARY)
 

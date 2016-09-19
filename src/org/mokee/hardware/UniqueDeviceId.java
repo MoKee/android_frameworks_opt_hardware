@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2015 The CyanogenMod Project
+ * Copyright (C) 2016 The CyanogenMod Project
+ * Copyright (C) 2016 The MoKee Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,33 +15,25 @@
  * limitations under the License.
  */
 
-package org.cyanogenmod.hardware;
+package org.mokee.hardware;
 
-import android.content.Context;
-
-public class ThermalMonitor {
-    /**
-     * Initialize monitor
-     */
-    public static void initialize(ThermalUpdateCallback callback) {
-    }
+/**
+ * Generate a unique but deterministic ID for this hardware, based on unchangeable
+ * hardware serial numbers.
+ */
+public class UniqueDeviceId {
 
     /**
-     * Whether device supports it
+     * Whether device supports reporting a unique device id.
      *
      * @return boolean Supported devices must return always true
      */
-    public static boolean isSupported() {
-        return false;
-    }
+    public static boolean isSupported() { return false; }
 
     /**
-     * This method return the current activation state
+     * This method retreives a unique ID for the device.
      *
-     * @return boolean Must be false when feature is not supported or
-     * disabled.
+     * @return String The unique device ID
      */
-    public static boolean isEnabled() {
-        return false;
-    }
+    public static String getUniqueDeviceId() { return null; }
 }

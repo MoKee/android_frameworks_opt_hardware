@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2014 The CyanogenMod Project
+ * Copyright (C) 2015 The CyanogenMod Project
+ * Copyright (C) 2015 The MoKee Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,36 +15,33 @@
  * limitations under the License.
  */
 
-package org.cyanogenmod.hardware;
+package org.mokee.hardware;
 
-/**
- * Tap (usually double-tap) to wake. This *should always* be supported by
- * the hardware directly. A lot of recent touch controllers have a firmware
- * option for this
- */
-public class TapToWake {
+import android.content.Context;
+
+public class ThermalMonitor {
+    /**
+     * Initialize monitor
+     */
+    public static void initialize(ThermalUpdateCallback callback) {
+    }
 
     /**
      * Whether device supports it
      *
      * @return boolean Supported devices must return always true
      */
-    public static boolean isSupported() { return false; }
+    public static boolean isSupported() {
+        return false;
+    }
 
     /**
      * This method return the current activation state
      *
-     * @return boolean Must be false when feature is not supported or 
+     * @return boolean Must be false when feature is not supported or
      * disabled.
      */
-    public static boolean isEnabled() { return false; }
-
-    /**
-     * This method allows to set activation state
-     *
-     * @param state The new state
-     * @return boolean for on/off, exception if unsupported
-     */
-    public static boolean setEnabled(boolean state) { throw new UnsupportedOperationException(); }
-
+    public static boolean isEnabled() {
+        return false;
+    }
 }
