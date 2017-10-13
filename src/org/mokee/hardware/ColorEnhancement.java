@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2013 Xiao-Long Chen <chenxiaolong@cxl.epac.to>
+ * Copyright (C) 2013 The CyanogenMod Project
+ * Copyright (C) 2013 The MoKee Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,33 +15,33 @@
  * limitations under the License.
  */
 
-package org.lineageos.hardware;
+package org.mokee.hardware;
 
 /**
- * Glove mode / high touch sensitivity
+ * Color enhancement support
  */
-public class HighTouchSensitivity {
+public class ColorEnhancement {
 
     /**
-     * Whether device supports high touch sensitivity.
+     * Whether device supports an color enhancement technology.
      *
      * @return boolean Supported devices must return always true
      */
     public static boolean isSupported() { return false; }
 
     /**
-     * This method return the current activation status of high touch sensitivity
+     * This method return the current activation status of the color enhancement technology.
      *
-     * @return boolean Must be false if high touch sensitivity is not supported or not activated,
-     * or the operation failed while reading the status; true in any other case.
+     * @return boolean Must be false when color enhancement is not supported or not activated, or
+     * the operation failed while reading the status; true in any other case.
      */
     public static boolean isEnabled() { return false; }
 
     /**
-     * This method allows to setup high touch sensitivity status.
+     * This method allows to setup color enhancement technology status.
      *
-     * @param status The new high touch sensitivity status
-     * @return boolean Must be false if high touch sensitivity is not supported or the operation
+     * @param status The new color enhancement status
+     * @return boolean Must be false if adaptive backlight is not supported or the operation
      * failed; true in any other case.
      */
     public static boolean setEnabled(boolean status) { return false; }
