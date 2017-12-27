@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 2016 The CyanogenMod Project
  *               2017 The LineageOS Project
+ *               2017 The MoKee Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.lineageos.hardware;
+package org.mokee.hardware;
 
-import lineageos.hardware.TouchscreenGesture;
+import mokee.hardware.TouchscreenGesture;
 
 /**
  * Touchscreen gestures API

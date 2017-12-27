@@ -1,5 +1,6 @@
 /*
- * Copyright (C) 2015 The CyanogenMod Project
+ * Copyright (C) 2014 The CyanogenMod Project
+ * Copyright (C) 2014 The MoKee Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,33 +15,25 @@
  * limitations under the License.
  */
 
-package org.lineageos.hardware;
+package org.mokee.hardware;
 
-import android.content.Context;
-
-public class ThermalMonitor {
-    /**
-     * Initialize monitor
-     */
-    public static void initialize(ThermalUpdateCallback callback) {
-    }
+/**
+ * Support for displaying a different serial number in Settings -> About Phone
+ * than ro.serialno, which may be different than the actual serial number
+ * sticker on the hardware.
+ */
+public class SerialNumber {
 
     /**
-     * Whether device supports it
+     * Whether device requires an alternative serial number.
      *
      * @return boolean Supported devices must return always true
      */
-    public static boolean isSupported() {
-        return false;
-    }
+    public static boolean isSupported() { return false; }
 
     /**
-     * This method return the current activation state
-     *
-     * @return boolean Must be false when feature is not supported or
-     * disabled.
+     * Returns the alternative serial number to be displayed.
      */
-    public static boolean isEnabled() {
-        return false;
-    }
+    public static String getSerialNumber() { return null; }
+
 }
