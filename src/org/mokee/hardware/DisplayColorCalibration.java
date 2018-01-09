@@ -23,7 +23,6 @@ import android.os.IBinder;
 import android.os.Parcel;
 import android.os.RemoteException;
 import android.os.ServiceManager;
-import android.os.SystemProperties;
 import android.util.Slog;
 
 import com.android.server.LocalServices;
@@ -40,8 +39,11 @@ public class DisplayColorCalibration {
 
     private static final int LEVEL_COLOR_MATRIX_LIVEDISPLAY = LEVEL_COLOR_MATRIX_NIGHT_DISPLAY + 1;
 
-    private static final boolean sUseHWC2ColorTransform;
-    private static final boolean sUseGPUMode;
+    private static final int MODE_UNSUPPORTED          = 0;
+    private static final int MODE_HWC2_COLOR_TRANSFORM = 1;
+    private static final int MODE_SYSFS_RGB            = 2;
+
+    private static final int sMode;
 
     private static final int MIN = 255;
     private static final int MAX = 32768;
@@ -51,19 +53,22 @@ public class DisplayColorCalibration {
     private static DisplayTransformManager sDTMService;
 
     static {
-        // We use HWC2 color transform if possible.
-        sUseHWC2ColorTransform = ActivityThread.currentApplication().
-                getApplicationContext().getResources().getBoolean(
-                        com.android.internal.R.bool.config_setColorTransformAccelerated);
-        // We can also support GPU transform using RenderEngine. This is not
-        // preferred though, as it has a high power cost.
-        sUseGPUMode = !FileUtils.isFileWritable(COLOR_FILE) ||
-                SystemProperties.getBoolean("debug.livedisplay.force_gpu", false);
+        // Determine mode of operation.
+        // Order of priority is:
+        // 1) HWC2 color transform
+        // 2) sysfs rgb file
+        if (ActivityThread.currentApplication().getApplicationContext().getResources().getBoolean(
+                    com.android.internal.R.bool.config_setColorTransformAccelerated)) {
+            sMode = MODE_HWC2_COLOR_TRANSFORM;
+        } else if (FileUtils.isFileWritable(COLOR_FILE)) {
+            sMode = MODE_SYSFS_RGB;
+        } else {
+            sMode = MODE_UNSUPPORTED;
+        }
     }
 
     public static boolean isSupported() {
-        // Always true, use GPU mode if no HW support
-        return true;
+        return sMode != MODE_UNSUPPORTED;
     }
 
     public static int getMaxValue()  {
@@ -79,7 +84,7 @@ public class DisplayColorCalibration {
     }
 
     public static String getCurColors()  {
-        if (!sUseGPUMode && !sUseHWC2ColorTransform) {
+        if (sMode == MODE_SYSFS_RGB) {
             return FileUtils.readOneLine(COLOR_FILE);
         }
 
@@ -88,30 +93,19 @@ public class DisplayColorCalibration {
     }
 
     public static boolean setColors(String colors) {
-        if (!sUseGPUMode && !sUseHWC2ColorTransform) {
+        if (sMode == MODE_SYSFS_RGB) {
             return FileUtils.writeLine(COLOR_FILE, colors);
-        }
-
-        float[] mat = toColorMatrix(colors);
-
-        if (sUseHWC2ColorTransform) {
+        } else if (sMode == MODE_HWC2_COLOR_TRANSFORM) {
             if (sDTMService == null) {
                 sDTMService = LocalServices.getService(DisplayTransformManager.class);
                 if (sDTMService == null) {
                     return false;
                 }
             }
-            sDTMService.setColorMatrix(LEVEL_COLOR_MATRIX_LIVEDISPLAY, mat);
+            sDTMService.setColorMatrix(LEVEL_COLOR_MATRIX_LIVEDISPLAY, toColorMatrix(colors));
             return true;
         }
-
-        // set to null if identity
-        if (mat == null ||
-                (mat[0] == 1.0f && mat[5] == 1.0f &&
-                 mat[10] == 1.0f && mat[15] == 1.0f)) {
-            return setColorTransform(null);
-        }
-        return setColorTransform(mat);
+        return false;
     }
 
     private static float[] toColorMatrix(String rgbString) {
@@ -140,36 +134,4 @@ public class DisplayColorCalibration {
         mat[15] = 1.0f;
         return mat;
     }
-
-    /**
-     * Sets the surface flinger's color transformation as a 4x4 matrix. If the
-     * matrix is null, color transformations are disabled.
-     *
-     * @param m the float array that holds the transformation matrix, or null to
-     *            disable transformation
-     */
-    private static boolean setColorTransform(float[] m) {
-        try {
-            final IBinder flinger = ServiceManager.getService("SurfaceFlinger");
-            if (flinger != null) {
-                final Parcel data = Parcel.obtain();
-                data.writeInterfaceToken("android.ui.ISurfaceComposer");
-                if (m != null) {
-                    data.writeInt(1);
-                    for (int i = 0; i < 16; i++) {
-                        data.writeFloat(m[i]);
-                    }
-                } else {
-                    data.writeInt(0);
-                }
-                flinger.transact(1030, data, null, 0);
-                data.recycle();
-            }
-        } catch (RemoteException ex) {
-            Slog.e(TAG, "Failed to set color transform", ex);
-            return false;
-        }
-        return true;
-    }
-
 }
